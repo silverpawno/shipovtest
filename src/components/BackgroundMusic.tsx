@@ -13,6 +13,8 @@ export default function BackgroundMusic() {
       setIsPlaying(false);
     } else {
       audioRef.current.volume = 0.4;
+      // Начинаем загрузку стрима сразу по клику
+      audioRef.current.load();
       audioRef.current
         .play()
         .then(() => setIsPlaying(true))
@@ -28,7 +30,7 @@ export default function BackgroundMusic() {
         ref={audioRef} 
         src="https://github.com/silverpawno/shipovtest/releases/download/v1v1v1/Kanye_West_-_ALL_THE_LOVE_feat_Andre_Troutman_81159719.mp3" 
         loop 
-        preload="auto"
+        preload="metadata"
         crossOrigin="anonymous"
       />
 
