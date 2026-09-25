@@ -24,12 +24,12 @@ export default function BackgroundMusic() {
 
   return (
     <>
-      {/* Используем стабильную тестовую ссылку на короткий звуковой сигнал/трек */}
       <audio 
         ref={audioRef} 
         src="https://github.com/silverpawno/shipovtest/releases/download/v1v1v1/Kanye_West_-_ALL_THE_LOVE_feat_Andre_Troutman_81159719.mp3" 
         loop 
-        preload="auto" 
+        preload="auto"
+        crossOrigin="anonymous"
       />
 
       <button
