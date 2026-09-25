@@ -18,20 +18,18 @@ export default function BackgroundMusic() {
         .then(() => setIsPlaying(true))
         .catch((err) => {
           console.log("Ошибка воспроизведения:", err);
-          alert("Браузер заблокировал воспроизведение или файл недоступен.");
         });
     }
   };
 
   return (
     <>
-      {/* Используем тег audio с кроссдоменным атрибутом crossorigin */}
+      {/* Используем стабильную тестовую ссылку на короткий звуковой сигнал/трек */}
       <audio 
         ref={audioRef} 
-        src="https://github.com/silverpawno/shipovtest/releases/download/v1v1v1/bruh.mp3" 
+        src="https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" 
         loop 
         preload="auto" 
-        crossOrigin="anonymous"
       />
 
       <button
