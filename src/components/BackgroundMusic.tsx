@@ -25,9 +25,9 @@ export default function BackgroundMusic() {
   return (
     <>
       {/* Ссылка на локальный файл из папки public */}
-      <audio 
+        <audio 
         ref={audioRef} 
-        src="/audio/bruh.mp3" 
+        src="/audio/bruh.mp3?v=2" 
         loop 
         preload="auto" 
       />
