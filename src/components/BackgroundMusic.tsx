@@ -27,7 +27,7 @@ export default function BackgroundMusic() {
       {/* Используем стабильную тестовую ссылку на короткий звуковой сигнал/трек */}
       <audio 
         ref={audioRef} 
-        src="https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" 
+        src="https://github.com/silverpawno/shipovtest/releases/download/v1v1v1/bruh.mp3" 
         loop 
         preload="auto" 
       />
