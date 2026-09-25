@@ -44,7 +44,7 @@ export default function BackgroundMusic() {
   return (
     <>
       {/* Аудио элемент, ссылающийся на файл из папки public */}
-      <audio ref={audioRef} src="audio\bruh.mp3" loop preload="auto" />
+      <audio ref={audioRef} src="/audio/bruh.mp3" loop preload="auto" />
 
       {/* Аккуратная плавающая кнопка управления звуком в углу экрана */}
       <button
