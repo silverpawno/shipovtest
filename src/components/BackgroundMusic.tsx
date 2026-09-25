@@ -4,8 +4,8 @@ import { Volume2, VolumeX } from "lucide-react";
 export default function BackgroundMusic() {
   const [isPlaying, setIsPlaying] = useState(false);
   
-  // Прямая ссылка на ваш файл из Google Диска
-  const [audio] = useState(() => new Audio("https://docs.google.com/uc?export=download&id=1C1E7kYidWtosyE-mj8pIMa3JxLTfZq3A"));
+  // Прямая ссылка из ваших GitHub Releases
+  const [audio] = useState(() => new Audio("https://github.com/silverpawno/shipovtest/releases/download/v1v1v1/bruh.mp3"));
 
   audio.loop = true;
   audio.volume = 0.4;
