@@ -3,6 +3,10 @@ import { OrbitControls, useTexture, Html } from "@react-three/drei";
 import { Suspense, useRef, useLayoutEffect, useState } from "react";
 import * as THREE from "three";
 
+interface Globe3DProps {
+  selectedHub?: 'usa' | 'europe' | 'asia';
+}
+
 const allMarkers = [
   { lat: 39.0, lng: -97.0, label: 'США', type: 'dest' },
   { lat: 54.0, lng: -2.0, label: 'Великобритания', type: 'dest' },
@@ -11,7 +15,7 @@ const allMarkers = [
   { lat: 56.0, lng: -106.0, label: 'Канада', type: 'dest' },
   { lat: 37.0, lng: 127.0, label: 'Юж. Корея', type: 'dest' },
   { lat: 36.0, lng: 138.0, label: 'Япония', type: 'dest' },
-  { lat: 35.0, lng: 105.0, label: 'Киай', type: 'dest' },
+  { lat: 35.0, lng: 105.0, label: 'Китай', type: 'dest' },
   { lat: 47.0, lng: 19.0, label: 'Венгрия', type: 'dest' },
   { lat: 52.0, lng: 20.0, label: 'Польша', type: 'dest' },
   { lat: 4.0, lng: 102.0, label: 'Малайзия', type: 'dest' },
@@ -44,7 +48,6 @@ function MarkerItem({ hub }: { hub: typeof allMarkers[0] }) {
 
   return (
     <group position={position}>
-      {/* Невидимая, но удобная для наведения зона */}
       <mesh
         onPointerOver={(e) => {
           e.stopPropagation();
@@ -56,13 +59,11 @@ function MarkerItem({ hub }: { hub: typeof allMarkers[0] }) {
         <meshBasicMaterial transparent opacity={0} />
       </mesh>
 
-      {/* Сам визуальный маркер: аккуратная маленькая точка */}
       <mesh>
         <sphereGeometry args={[0.022, 16, 16]} />
         <meshBasicMaterial color="#facc15" />
       </mesh>
 
-      {/* Подпись появляется при наведении */}
       {hovered && (
         <Html
           position={[0, 0.08, 0]}
@@ -79,7 +80,7 @@ function MarkerItem({ hub }: { hub: typeof allMarkers[0] }) {
   );
 }
 
-function GlobeMesh() {
+function GlobeMesh({ selectedHub }: { selectedHub?: 'usa' | 'europe' | 'asia' }) {
   const groupRef = useRef<THREE.Group>(null);
   const surfaceMap = useTexture("//unpkg.com/three-globe/example/img/earth-blue-marble.jpg");
 
@@ -90,16 +91,27 @@ function GlobeMesh() {
     }
   }, [surfaceMap]);
 
+  // Целевые углы поворота для каждого хаба
+  const targetLngs = {
+    europe: -0.1,
+    usa: 1.8,
+    asia: -2.5
+  };
+
   useFrame((_, delta: number) => {
     const smoothDelta = Math.min(delta, 0.03);
     if (groupRef.current) {
-      groupRef.current.rotation.y += smoothDelta * 0.05;
+      if (selectedHub) {
+        const targetY = targetLngs[selectedHub];
+        groupRef.current.rotation.y = THREE.MathUtils.lerp(groupRef.current.rotation.y, targetY, smoothDelta * 4);
+      } else {
+        groupRef.current.rotation.y += smoothDelta * 0.05;
+      }
     }
   });
 
   return (
     <group ref={groupRef} rotation={[0.2, -0.6, -0.05]}>
-      {/* Земля */}
       <mesh>
         <sphereGeometry args={[1.6, 64, 64]} />
         {surfaceMap && (
@@ -111,7 +123,6 @@ function GlobeMesh() {
         )}
       </mesh>
 
-      {/* Атмосфера */}
       <mesh scale={1.03}>
         <sphereGeometry args={[1.6, 48, 48]} />
         <shaderMaterial
@@ -140,7 +151,6 @@ function GlobeMesh() {
         />
       </mesh>
 
-      {/* Маркеры */}
       {allMarkers.map((hub) => (
         <MarkerItem key={hub.label} hub={hub} />
       ))}
@@ -148,7 +158,7 @@ function GlobeMesh() {
   );
 }
 
-export default function Globe3D() {
+export default function Globe3D({ selectedHub }: Globe3DProps) {
   return (
     <div className="relative aspect-square w-full h-full flex items-center justify-center select-none" aria-label="Rotating globe">
       <div className="absolute inset-[12%] rounded-full bg-blue-500/10 blur-3xl pointer-events-none" />
@@ -161,11 +171,13 @@ export default function Globe3D() {
         <directionalLight position={[-5, 3, 5]} intensity={2.0} />
         
         <Suspense fallback={null}>
-          <GlobeMesh />
+          <GlobeMesh selectedHub={selectedHub} />
         </Suspense>
 
         <OrbitControls
-          enableZoom={false}
+          enableZoom={true}          
+          minDistance={2.5}          
+          maxDistance={7.0}          
           enablePan={false}
           rotateSpeed={0.5}
           dampingFactor={0.05}
