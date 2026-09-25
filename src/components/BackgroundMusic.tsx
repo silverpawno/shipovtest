@@ -24,10 +24,10 @@ export default function BackgroundMusic() {
 
   return (
     <>
-      {/* Проверенный стабильный CDN-аудиопоток */}
+      {/* Ссылка на локальный файл из папки public */}
       <audio 
         ref={audioRef} 
-        src="https://actions.google.com/sounds/v1/ambiences/coffee_shop.ogg" 
+        src="/audio/bruh.mp3" 
         loop 
         preload="auto" 
       />
